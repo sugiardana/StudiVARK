@@ -45,14 +45,12 @@ def generate_pdf(name, counts, chart_buf):
     pdf = FPDF()
     pdf.add_page()
     pdf.set_font("Arial", size=14)
-    pdf.cell(200, 10, txt="Hasil Kuesioner VARK", ln=1, align="C")
+    pdf.cell(200, 10, txt="Hasil Kuesioner VARK  {name}", ln=1, align="C")
     pdf.ln(5)
-    pdf.cell(200, 10, txt=f"Nama: {name}", ln=1)
     pdf.ln(5)
     for k, label in zip(['V','A','R','K'], ['Visual', 'Auditory', 'Reading/Writing', 'Kinesthetic']):
         pdf.cell(200, 10, txt=f"{label}: {counts[k]}", ln=1)
-    pdf.cell(200, 10, txt="DEBUG: Loop dengan label dipakai", ln=1)
-
+    
 
     # Simpan chart ke file sementara
     if chart_buf is not None:
@@ -113,7 +111,7 @@ if submitted and name:
 
     # PDF download
     pdf_data = generate_pdf(name, counts, chart_buf)
-    st.download_button("📄 Unduh PDF", data=pdf_data, file_name="hasil_vark.pdf", mime="application/pdf")
+    st.download_button("📄 Unduh PDF", data=pdf_data, file_name="hasil_vark_{name}.pdf", mime="application/pdf")
 
 elif submitted:
     st.warning("Silakan isi nama terlebih dahulu.")
