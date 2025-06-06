@@ -3,6 +3,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from fpdf import FPDF
 from io import BytesIO
+import tempfile
 
 # --------------------- Load dari Excel ---------------------
 @st.cache_data
@@ -34,7 +35,7 @@ def generate_pdf(name, counts, chart_buf):
     for tipe, skor in counts.items():
         pdf.cell(200, 10, txt=f"{tipe}: {skor}", ln=True)
 
-    # ✅ Simpan buffer chart ke file sementara
+    # Simpan gambar chart ke file sementara sebelum ditambahkan ke PDF
     if chart_buf is not None:
         with tempfile.NamedTemporaryFile(delete=False, suffix=".png") as tmpfile:
             tmpfile.write(chart_buf.getbuffer())
