@@ -44,13 +44,14 @@ def load_questions_from_excel(file_path):
 def generate_pdf(name, counts, chart_buf):
     pdf = FPDF()
     pdf.add_page()
-    pdf.set_font("Arial", size=12)
+    pdf.set_font("Arial", size=14)
+    pdf.cell(200, 10, txt="Hasil Kuesioner VARK", ln=1, align="C")
+    pdf.ln(5)
+    pdf.cell(200, 10, txt=f"Nama: {name}", ln=1)
+    pdf.ln(5)
+    for k, label in zip(['V','A','R','K'], ['Visual', 'Auditory', 'Reading/Writing', 'Kinesthetic']):
+        pdf.cell(200, 10, txt=f"{label}: {counts[k]}", ln=1)
 
-    pdf.cell(200, 10, txt=f"Hasil Kuisioner VARK - {name}", ln=True, align='C')
-    pdf.ln(10)
-
-    for tipe, skor in counts.items():
-        pdf.cell(200, 10, txt=f"{tipe}: {skor}", ln=True)
 
     # Simpan chart ke file sementara
     if chart_buf is not None:
