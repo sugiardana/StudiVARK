@@ -8,7 +8,7 @@ import tempfile
 
 
 # --------------------- Load dari Excel ---------------------
-@st.cache_data
+# @st.cache_data
 def load_questions_from_excel(file_path):
     q_df = pd.read_excel(file_path, sheet_name='Questions')
     a_df = pd.read_excel(file_path, sheet_name='Answers')
