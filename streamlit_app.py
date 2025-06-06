@@ -1,10 +1,11 @@
 import streamlit as st
 import pandas as pd
+import random
 import matplotlib.pyplot as plt
 from fpdf import FPDF
 from io import BytesIO
 import tempfile
-import random
+
 
 # --------------------- Load dari Excel ---------------------
 @st.cache_data
