@@ -26,17 +26,25 @@ def load_questions_from_excel(file_path):
 def generate_pdf(name, counts, chart_buf):
     pdf = FPDF()
     pdf.add_page()
-    pdf.set_font("Arial", size=14)
-    pdf.cell(200, 10, txt="Hasil Kuesioner VARK", ln=True, align='C')
-    pdf.ln(10)
     pdf.set_font("Arial", size=12)
-    pdf.cell(200, 10, txt=f"Nama: {name}", ln=True)
-    pdf.ln(5)
-    for key, label in zip(['V','A','R','K'], ['Visual', 'Auditory', 'Reading/Writing', 'Kinesthetic']):
-        pdf.cell(200, 10, txt=f"{label}: {counts[key]}", ln=True)
+
+    pdf.cell(200, 10, txt=f"Hasil Kuisioner VARK - {name}", ln=True, align='C')
     pdf.ln(10)
-    pdf.image(chart_buf, x=30, w=150)
-    return pdf.output(dest='S').encode('latin1')
+
+    for tipe, skor in counts.items():
+        pdf.cell(200, 10, txt=f"{tipe}: {skor}", ln=True)
+
+    # ✅ Simpan buffer chart ke file sementara
+    if chart_buf is not None:
+        with tempfile.NamedTemporaryFile(delete=False, suffix=".png") as tmpfile:
+            tmpfile.write(chart_buf.getbuffer())
+            tmpfile_path = tmpfile.name
+        pdf.image(tmpfile_path, x=30, w=150)
+
+    output = BytesIO()
+    pdf.output(output)
+    output.seek(0)
+    return output
 
 # --------------------- Streamlit App ---------------------
 st.title("Kuesioner Gaya Belajar VARK")
