@@ -51,6 +51,7 @@ def generate_pdf(name, counts, chart_buf):
     pdf.ln(5)
     for k, label in zip(['V','A','R','K'], ['Visual', 'Auditory', 'Reading/Writing', 'Kinesthetic']):
         pdf.cell(200, 10, txt=f"{label}: {counts[k]}", ln=1)
+    pdf.cell(200, 10, txt="DEBUG: Loop dengan label dipakai", ln=1)
 
 
     # Simpan chart ke file sementara
