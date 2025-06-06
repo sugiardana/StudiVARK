@@ -18,10 +18,24 @@ def load_questions_from_excel(file_path):
         if qid not in questions:
             questions[qid] = {
                 'text': row['question_text'],
-                'options': {}
+                'options': []
             }
-        questions[qid]['options'][row['vark_type']] = row['answer_text']
-    return questions
+        questions[qid]['options'].append({
+            'vark_type': row['vark_type'],
+            'answer_text': row['answer_text']
+        })
+    
+    # Ubah dict ke list supaya bisa diacak urutan pertanyaan
+    questions_list = list(questions.values())
+    
+    # Acak urutan jawaban tiap pertanyaan
+    for q in questions_list:
+        random.shuffle(q['options'])
+    
+    # Acak urutan pertanyaan
+    random.shuffle(questions_list)
+    
+    return questions_list
 
 # --------------------- Fungsi PDF ---------------------
 def generate_pdf(name, counts, chart_buf):
