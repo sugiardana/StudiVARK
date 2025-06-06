@@ -35,16 +35,16 @@ def generate_pdf(name, counts, chart_buf):
     for tipe, skor in counts.items():
         pdf.cell(200, 10, txt=f"{tipe}: {skor}", ln=True)
 
-    # Simpan gambar chart ke file sementara sebelum ditambahkan ke PDF
+    # Simpan chart ke file sementara
     if chart_buf is not None:
         with tempfile.NamedTemporaryFile(delete=False, suffix=".png") as tmpfile:
             tmpfile.write(chart_buf.getbuffer())
             tmpfile_path = tmpfile.name
         pdf.image(tmpfile_path, x=30, w=150)
 
-    output = BytesIO()
-    pdf.output(output)
-    output.seek(0)
+    # ✅ Simpan hasil PDF ke BytesIO
+    pdf_bytes = pdf.output(dest='S').encode('latin-1')
+    output = BytesIO(pdf_bytes)
     return output
 
 # --------------------- Streamlit App ---------------------
