@@ -111,7 +111,7 @@ if submitted and name:
 
     # PDF download
     pdf_data = generate_pdf(name, counts, chart_buf)
-    st.download_button("📄 Unduh PDF", data=pdf_data, file_name="hasil_vark_{name}.pdf", mime="application/pdf")
+    st.download_button("📄 Unduh PDF", data=pdf_data, file_name="hasil_vark_"+{name}+".pdf", mime="application/pdf")
 
 elif submitted:
     st.warning("Silakan isi nama terlebih dahulu.")
