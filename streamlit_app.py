@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 from fpdf import FPDF
 from io import BytesIO
 import tempfile
+import random
 
 # --------------------- Load dari Excel ---------------------
 @st.cache_data
