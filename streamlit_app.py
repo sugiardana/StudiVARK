@@ -45,7 +45,8 @@ def generate_pdf(name, counts, chart_buf):
     pdf = FPDF()
     pdf.add_page()
     pdf.set_font("Arial", size=14)
-    pdf.cell(200, 10, txt="Hasil Kuesioner VARK  {name}", ln=1, align="C")
+    ls_judul = f"Hasil Kuesioner VARK  {name}"
+    pdf.cell(200, 10, txt=ls_judul, ln=1, align="C")
     pdf.ln(5)
     pdf.ln(5)
     for k, label in zip(['V','A','R','K'], ['Visual', 'Auditory', 'Reading/Writing', 'Kinesthetic']):
