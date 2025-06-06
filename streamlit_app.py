@@ -20,6 +20,7 @@ def load_questions_from_excel(file_path):
         qid = row['id']
         if qid not in questions:
             questions[qid] = {
+                'id': qid,
                 'text': row['question_text'],
                 'options': []
             }
