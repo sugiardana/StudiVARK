@@ -14,6 +14,7 @@ def load_questions_from_excel(file_path):
     a_df = pd.read_excel(file_path, sheet_name='Answers')
     
     merged = q_df.merge(a_df, left_on='id', right_on='question_id')
+    
     questions = {}
     for _, row in merged.iterrows():
         qid = row['id']
@@ -27,10 +28,10 @@ def load_questions_from_excel(file_path):
             'answer_text': row['answer_text']
         })
     
-    # Ubah dict ke list supaya bisa diacak urutan pertanyaan
+    # Ubah dict ke list
     questions_list = list(questions.values())
     
-    # Acak urutan jawaban tiap pertanyaan
+    # Acak pilihan jawaban setiap pertanyaan
     for q in questions_list:
         random.shuffle(q['options'])
     
@@ -71,15 +72,17 @@ questions = load_questions_from_excel("vark_questions.xlsx")
 
 responses = {}
 with st.form("quiz_form"):
-    for qid in questions:
-        q = questions[qid]
-        st.write(f"**{qid}. {q['text']}**")
-        responses[qid] = st.radio(
+    for idx, q in enumerate(questions, 1):
+        st.write(f"**{idx}. {q['text']}**")
+        labels = [opt['answer_text'] for opt in q['options']]
+        values = [opt['vark_type'] for opt in q['options']]
+        selected = st.radio(
             "", 
-            options=list(q['options'].keys()), 
-            format_func=lambda x: q['options'][x], 
-            key=f"q{qid}"
+            options=labels,
+            key=f"q{idx}"
         )
+        responses[idx] = values[labels.index(selected)]
+
     submitted = st.form_submit_button("Kirim")
 
 if submitted and name:
@@ -91,6 +94,7 @@ if submitted and name:
     for k, label in zip(['V','A','R','K'], ['Visual', 'Auditory', 'Reading/Writing', 'Kinesthetic']):
         st.write(f"**{label}**: {counts[k]}")
 
+    # Grafik donut
     fig, ax = plt.subplots()
     labels = ['Visual', 'Auditory', 'Reading/Writing', 'Kinesthetic']
     values = [counts['V'], counts['A'], counts['R'], counts['K']]
@@ -100,10 +104,12 @@ if submitted and name:
     ax.axis('equal')
     st.pyplot(fig)
 
+    # Simpan grafik sebagai PNG
     chart_buf = BytesIO()
     fig.savefig(chart_buf, format='png')
     chart_buf.seek(0)
 
+    # PDF download
     pdf_data = generate_pdf(name, counts, chart_buf)
     st.download_button("📄 Unduh PDF", data=pdf_data, file_name="hasil_vark.pdf", mime="application/pdf")
 
