@@ -71,7 +71,7 @@ questions = load_questions_from_excel("vark_questions.xlsx")
 
 responses = {}
 with st.form("quiz_form"):
-    for qid in sorted(questions):
+    for qid in questions:
         q = questions[qid]
         st.write(f"**{qid}. {q['text']}**")
         responses[qid] = st.radio(
